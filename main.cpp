@@ -30,6 +30,7 @@ namespace topIT
     size_t points(const IDraw &d, p_t **pts, size_t &s);
     f_t frame(const p_t *pts, size_t s);
     char *canvas(f_t fr, char fill);
+    void paint(char *cnv, f_t fr, p_t, char ch);
 }
 int main()
 {
@@ -50,8 +51,10 @@ int main()
         }
         f_t fr = frame(pts, s);
         char *cnv = canvas(fr, '.');
-
-
+        for (size_t i = 0; i < s; ++i)
+        {
+            paint(cnv, fr, pts[i], '#');
+        }
 
         delete[] cnv;
     }
