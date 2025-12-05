@@ -1,6 +1,6 @@
 #include <iostream>
 
-namespace topIT
+namespace topit
 {
     struct p_t
     {
@@ -27,16 +27,41 @@ namespace topIT
         p_t next(p_t) const override;
         p_t d;
     };
-    size_t points(const IDraw &d, p_t **pts, size_t &s);            // TODO расширить заданный массив
-    f_t frame(const p_t *pts, size_t s);                            // TODO найти мин макс и создать рамку
-    char *canvas(f_t fr, char fill);                                // TODO построить полотно (столбцы и строки)
-    void paint(char *cnv, f_t fr, p_t, char ch);                    // TODO точка -> массив
-    std::ostream &flush(std::ostream &os, const char *cnv, f_t fr); // TODO вывод двумерного массива
+
+    struct VerticalLine : IDraw
+    {
+        VerticalLine(p_t start, p_t end);
+        p_t start, end;
+        p_t begin() const override;
+        p_t next(p_t) const override;
+    };
+    /*
+    TODO: Домашнее задание:
+      - Добавить еще 2-3 фигуры
+      - Вертикальный отрезок
+      - Горизонтальный отрезок
+      - Диагональ под 45 градусов заданной длины
+      - Придумать свою фигуру
+      */
+    // TODO: расширять заданный массив точками из очередной фигуры
+    //  - extend...
+    size_t points(const IDraw &d, p_t **pts, size_t s);
+
+    // TODO: найти минимум и максимум по каждой координате среди точек и сформировать фрейм
+    f_t frame(const p_t *pts, size_t s);
+
+    char *canvas(f_t fr, char fill);
+
+    // TODO: координаты точки перевести в координаты в двумерном массиве
+    void paint(char *cnv, f_t fr, p_t p, char fill);
+
+    // TODO: вывод двумерного массива на основе размеров, определяемых фреймом
+    void flush(std::ostream &os, const char *cnv, f_t fr);
 }
 int main()
 {
-    using namespace topIT;
-    topIT::IDraw *shapes[3] = {};
+    using namespace topit;
+    topit::IDraw *shapes[3] = {};
     p_t *pts = nullptr;
     int err = 0;
     size_t s = 0;
@@ -60,6 +85,7 @@ int main()
     }
     catch (...)
     {
+        // TODO: больше catch
         err = 2;
         std::cerr << "Bad drowing\n";
     }
@@ -70,32 +96,54 @@ int main()
     }
     return err;
 }
-
-topIT::Dot::Dot(int x, int y) : IDraw(), d{x, y} {}
-
-topIT::Dot::Dot(p_t dd) : IDraw(), d{dd} {}
-
-bool topIT::operator==(p_t a, p_t b)
+topit::Dot::Dot(int x, int y) : IDraw(), d{x, y} {}
+topit::Dot::Dot(p_t dd) : IDraw(), d{dd} {}
+bool topit::operator==(p_t a, p_t b)
 {
     return a.x == b.x && a.y == b.y;
 }
-
-bool topIT::operator!=(p_t a, p_t b)
+bool topit::operator!=(p_t a, p_t b)
 {
     return !(a == b);
 }
-
-topIT::p_t topIT::Dot::begin() const
+topit::p_t topit::Dot::begin() const
 {
     return d;
 }
-
-topIT::p_t topIT::Dot::next(p_t prev) const
+topit::p_t topit::Dot::next(p_t prev) const
 {
     if (prev != begin())
     {
         throw std::logic_error("bad input");
     }
-
     return d;
+}
+char *topit::canvas(f_t fr, char fill)
+{
+    size_t width = abs(fr.aa.x) + abs(fr.bb.x);
+    size_t height = abs(fr.aa.y) + abs(fr.bb.y);
+    char *canv = new char[height * width];
+    for (size_t i = 0; i < height * width; ++i)
+    {
+        canv[i] = fill;
+    }
+    return canv;
+}
+
+topit::VerticalLine::VerticalLine(p_t start, p_t end) : IDraw(), start(start), end(end)
+{
+}
+
+topit::p_t topit::VerticalLine::begin() const
+{
+    return start;
+}
+
+topit::p_t topit::VerticalLine::next(p_t prev) const
+{
+    if (prev.y >= end.y || prev.x != start.x || prev.y < start.y)
+    {
+        throw std::logic_error("bad input");
+    }
+    return p_t{prev.x, prev.y + 1};
 }
