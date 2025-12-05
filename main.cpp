@@ -21,8 +21,11 @@ namespace topIT
     };
     struct Dot : IDraw
     {
+        Dot(int x, int y);
+        explicit Dot(p_t dd);
         p_t begin() const override;
         p_t next(p_t) const override;
+        p_t d;
     };
 }
 int main()
@@ -32,6 +35,8 @@ int main()
     std::cout << (a == b) << '\n';
 }
 
+topIT::Dot(int x, int y) : IDrow(), d{x, y} {}
+
 bool topIT::operator==(p_t a, p_t b)
 {
     return a.x == b.x && a.y == b.y;
@@ -40,4 +45,19 @@ bool topIT::operator==(p_t a, p_t b)
 bool topIT::operator!=(p_t a, p_t b)
 {
     return !(a == b);
+}
+
+topIT::p_t topIT::Dot::begin() const
+{
+    return d;
+}
+
+topIT::p_t topIT::Dot::next(p_t prev) const
+{
+    if (prev != begin())
+    {
+        throw std::logic_error("bad input");
+    }
+
+    return d;
 }
