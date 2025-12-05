@@ -30,9 +30,25 @@ namespace topIT
 }
 int main()
 {
-    using topIT::p_t;
-    p_t a{1, 0}, b{1, 0};
-    std::cout << (a == b) << '\n';
+    using topIT::Dot;
+    topIT::IDraw *shapes[3] = {};
+    int err = 0;
+    try
+    {
+        shapes[0] = new Dot(0, 0);
+        shapes[1] = new Dot(5, 7);
+        shapes[2] = new Dot(-5, -2);
+    }
+    catch (...)
+    {
+        err = 2;
+        std::cerr << "Bad drowing\n";
+    }
+    for (size_t i = 0; i < 3; ++i)
+    {
+        delete shapes[i];
+    }
+    return err;
 }
 
 topIT::Dot::Dot(int x, int y) : IDraw(), d{x, y} {}
