@@ -31,6 +31,7 @@ namespace topIT
     f_t frame(const p_t *pts, size_t s);
     char *canvas(f_t fr, char fill);
     void paint(char *cnv, f_t fr, p_t, char ch);
+    std::ostream &flush(std::ostream &os, const char *cnv, f_t fr);
 }
 int main()
 {
@@ -44,7 +45,6 @@ int main()
         shapes[0] = new Dot(0, 0);
         shapes[1] = new Dot(5, 7);
         shapes[2] = new Dot(-5, -2);
-        // TODO:
         for (size_t i = 0; i < 3; ++i)
         {
             s += points(*(shapes[i]), std::addressof(pts), s);
@@ -55,7 +55,7 @@ int main()
         {
             paint(cnv, fr, pts[i], '#');
         }
-
+        flush(std::cout, cnv, fr);
         delete[] cnv;
     }
     catch (...)
