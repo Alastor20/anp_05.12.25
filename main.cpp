@@ -35,7 +35,9 @@ int main()
     std::cout << (a == b) << '\n';
 }
 
-topIT::Dot(int x, int y) : IDrow(), d{x, y} {}
+topIT::Dot::Dot(int x, int y) : IDraw(), d{x, y} {}
+
+topIT::Dot::Dot(p_t dd) : IDraw(), d{dd} {}
 
 bool topIT::operator==(p_t a, p_t b)
 {
