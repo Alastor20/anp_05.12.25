@@ -35,6 +35,13 @@ namespace topit
         p_t begin() const override;
         p_t next(p_t) const override;
     };
+    struct HorizontalLine : IDraw
+    {
+        HorizontalLine(p_t start, p_t end);
+        p_t start, end;
+        p_t begin() const override;
+        p_t next(p_t) const override;
+    };
     /*
     TODO: Домашнее задание:
       - Добавить еще 2-3 фигуры
@@ -146,4 +153,22 @@ topit::p_t topit::VerticalLine::next(p_t prev) const
         throw std::logic_error("bad input");
     }
     return p_t{prev.x, prev.y + 1};
+}
+
+topit::HorizontalLine::HorizontalLine(p_t start, p_t end) : IDraw(), start(start), end(end)
+{
+}
+
+topit::p_t topit::HorizontalLine::begin() const
+{
+    return start;
+}
+
+topit::p_t topit::HorizontalLine::next(p_t prev) const
+{
+    if (prev.x >= end.x || prev.y != start.y || prev.x < start.x)
+    {
+        throw std::logic_error("bad input");
+    }
+    return p_t{prev.x + 1, prev.y};
 }
