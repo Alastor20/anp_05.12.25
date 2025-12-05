@@ -27,11 +27,11 @@ namespace topIT
         p_t next(p_t) const override;
         p_t d;
     };
-    size_t points(const IDraw &d, p_t **pts, size_t &s);
-    f_t frame(const p_t *pts, size_t s);
-    char *canvas(f_t fr, char fill);
-    void paint(char *cnv, f_t fr, p_t, char ch);
-    std::ostream &flush(std::ostream &os, const char *cnv, f_t fr);
+    size_t points(const IDraw &d, p_t **pts, size_t &s);            // TODO расширить заданный массив
+    f_t frame(const p_t *pts, size_t s);                            // TODO найти мин макс и создать рамку
+    char *canvas(f_t fr, char fill);                                // TODO построить полотно (столбцы и строки)
+    void paint(char *cnv, f_t fr, p_t, char ch);                    // TODO точка -> массив
+    std::ostream &flush(std::ostream &os, const char *cnv, f_t fr); // TODO вывод двумерного массива
 }
 int main()
 {
