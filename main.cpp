@@ -27,23 +27,40 @@ namespace topIT
         p_t next(p_t) const override;
         p_t d;
     };
+    size_t points(const IDraw &d, p_t **pts, size_t &s);
+    f_t frame(const p_t *pts, size_t s);
+    char *canvas(f_t fr, char fill);
 }
 int main()
 {
-    using topIT::Dot;
+    using namespace topIT;
     topIT::IDraw *shapes[3] = {};
+    p_t *pts = nullptr;
     int err = 0;
+    size_t s = 0;
     try
     {
         shapes[0] = new Dot(0, 0);
         shapes[1] = new Dot(5, 7);
         shapes[2] = new Dot(-5, -2);
+        // TODO:
+        for (size_t i = 0; i < 3; ++i)
+        {
+            s += points(*(shapes[i]), std::addressof(pts), s);
+        }
+        f_t fr = frame(pts, s);
+        char *cnv = canvas(fr, '.');
+
+
+
+        delete[] cnv;
     }
     catch (...)
     {
         err = 2;
         std::cerr << "Bad drowing\n";
     }
+    delete[] pts;
     for (size_t i = 0; i < 3; ++i)
     {
         delete shapes[i];
