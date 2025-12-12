@@ -1,6 +1,6 @@
 #include <iostream>
 
-namespace top
+namespace topIT
 {
     struct p_t
     {
@@ -42,14 +42,6 @@ namespace top
         p_t begin() const override;
         p_t next(p_t) const override;
     };
-    /*
-    TODO: Домашнее задание:
-      //- Добавить еще 2-3 фигуры
-      //- Вертикальный отрезок
-      //- Горизонтальный отрезок
-      - Диагональ под 45 градусов заданной длины
-      - Придумать свою фигуру
-      */
     void extend(p_t **pts, size_t s, p_t p);
     size_t points(const IDraw &d, p_t **pts, size_t s);
 
@@ -63,11 +55,11 @@ namespace top
     void paint(char *cnv, f_t fr, p_t p, char fill);
 
     void flush(std::ostream &os, const char *cnv, f_t fr);
-} // namespace top
+}
 int main()
 {
-    using namespace top;
-    top::IDraw *shapes[3] = {};
+    using namespace topIT;
+    topIT::IDraw *shapes[3] = {};
     p_t *pts = nullptr;
     int err = 0;
     size_t s = 0;
@@ -89,9 +81,8 @@ int main()
         flush(std::cout, cnv, fr);
         delete[] cnv;
     }
-    catch (std::exception &e)
+    catch (...)
     {
-        std::cerr << e.what() << '\n';
         err = 2;
         std::cerr << "Bad drowing\n";
     }
@@ -102,12 +93,12 @@ int main()
     }
     return err;
 }
-top::Dot::Dot(int x, int y) : IDraw(), d{x, y} {}
-top::Dot::Dot(p_t dd) : IDraw(), d{dd} {}
-bool top::operator==(p_t a, p_t b) { return a.x == b.x && a.y == b.y; }
-bool top::operator!=(p_t a, p_t b) { return !(a == b); }
-top::p_t top::Dot::begin() const { return d; }
-top::p_t top::Dot::next(p_t prev) const
+topIT::Dot::Dot(int x, int y) : IDraw(), d{x, y} {}
+topIT::Dot::Dot(p_t dd) : IDraw(), d{dd} {}
+bool topIT::operator==(p_t a, p_t b) { return a.x == b.x && a.y == b.y; }
+bool topIT::operator!=(p_t a, p_t b) { return !(a == b); }
+topIT::p_t topIT::Dot::begin() const { return d; }
+topIT::p_t topIT::Dot::next(p_t prev) const
 {
     if (prev != begin())
     {
@@ -116,7 +107,7 @@ top::p_t top::Dot::next(p_t prev) const
     return d;
 }
 
-void top::extend(p_t **pts, size_t s, p_t p)
+void topIT::extend(p_t **pts, size_t s, p_t p)
 {
     p_t *e = new p_t[s + 1];
     for (size_t i = 0; i < s; ++i)
@@ -128,7 +119,7 @@ void top::extend(p_t **pts, size_t s, p_t p)
     *pts = e;
 }
 
-size_t top::points(const IDraw &d, p_t **pts, size_t s)
+size_t topIT::points(const IDraw &d, p_t **pts, size_t s)
 {
     size_t r = 1;
     p_t p = d.begin();
@@ -142,7 +133,7 @@ size_t top::points(const IDraw &d, p_t **pts, size_t s)
     return r;
 }
 
-top::f_t top::frame(const p_t *pts, size_t s)
+topIT::f_t topIT::frame(const p_t *pts, size_t s)
 {
     if (!s)
     {
@@ -162,10 +153,10 @@ top::f_t top::frame(const p_t *pts, size_t s)
     return {aa, bb};
 }
 
-size_t top::cols(f_t fr) { return fr.bb.x - fr.aa.x + 1; }
-size_t top::rows(f_t fr) { return fr.bb.y - fr.aa.y + 1; }
+size_t topIT::cols(f_t fr) { return fr.bb.x - fr.aa.x + 1; }
+size_t topIT::rows(f_t fr) { return fr.bb.y - fr.aa.y + 1; }
 
-char *top::canvas(f_t fr, char fill)
+char *topIT::canvas(f_t fr, char fill)
 {
     char *canv = new char[rows(fr) * cols(fr)];
     for (size_t i = 0; i < rows(fr) * cols(fr); ++i)
@@ -175,14 +166,14 @@ char *top::canvas(f_t fr, char fill)
     return canv;
 }
 
-void top::paint(char *cnv, f_t fr, p_t p, char fill)
+void topIT::paint(char *cnv, f_t fr, p_t p, char fill)
 {
     size_t dy = fr.bb.y - p.y;
     size_t dx = p.x - fr.aa.x;
     cnv[dy * cols(fr) + dx] = fill;
 }
 
-void top::flush(std::ostream &os, const char *cnv, f_t fr)
+void topIT::flush(std::ostream &os, const char *cnv, f_t fr)
 {
     for (size_t i = 0; i < rows(fr); ++i)
     {
@@ -194,12 +185,12 @@ void top::flush(std::ostream &os, const char *cnv, f_t fr)
     }
 }
 
-top::VerticalLine::VerticalLine(p_t start, p_t end)
+topIT::VerticalLine::VerticalLine(p_t start, p_t end)
     : IDraw(), start(start), end(end) {}
 
-top::p_t top::VerticalLine::begin() const { return start; }
+topIT::p_t topIT::VerticalLine::begin() const { return start; }
 
-top::p_t top::VerticalLine::next(p_t prev) const
+topIT::p_t topIT::VerticalLine::next(p_t prev) const
 {
     if (prev.y > end.y || prev.x != start.x || prev.y < start.y)
     {
@@ -212,12 +203,12 @@ top::p_t top::VerticalLine::next(p_t prev) const
     return p_t{prev.x, prev.y + 1};
 }
 
-top::HorizontalLine::HorizontalLine(p_t start, p_t end)
+topIT::HorizontalLine::HorizontalLine(p_t start, p_t end)
     : IDraw(), start(start), end(end) {}
 
-top::p_t top::HorizontalLine::begin() const { return start; }
+topIT::p_t topIT::HorizontalLine::begin() const { return start; }
 
-top::p_t top::HorizontalLine::next(p_t prev) const
+topIT::p_t topIT::HorizontalLine::next(p_t prev) const
 {
     if (prev.x > end.x || prev.y != start.y || prev.x < start.x)
     {
