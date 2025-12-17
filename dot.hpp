@@ -3,13 +3,13 @@
 #include "IDrow.hpp"
 namespace topIT
 {
-    struct Dot : IDraw
-    {
-        Dot(int x, int y);
-        explicit Dot(p_t dd);
-        p_t begin() const override;
-        p_t next(p_t) const override;
-        p_t d;
-    };
+  struct Dot : IDraw
+  {
+    Dot(int x, int y);
+    explicit Dot(p_t dd);
+    p_t begin() const override;
+    p_t next(p_t) const override;
+    p_t d;
+  };
 }
 #endif
