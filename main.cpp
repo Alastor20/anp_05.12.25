@@ -3,7 +3,12 @@
 
 int main()
 {
-    using namespace topIT;
+    using  topIT::IDraw;
+    using topIT::Dot;
+    using topIT::VerticalLine;
+    using topIT::HorizontalLine;
+    using topIT::p_t;
+    using topIT::f_t;
     IDraw *shapes[3] = {};
     p_t *pts = nullptr;
     int err = 0;
