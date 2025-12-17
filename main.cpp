@@ -1,9 +1,5 @@
 #include <iostream>
-#include "IDrow.hpp"
-#include "geom.hpp"
-#include "dot.hpp"
-#include "canvas.hpp"
-#include "lines.hpp"
+#include "ascii_draw.hpp"
 
 int main()
 {
