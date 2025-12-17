@@ -1,9 +1,9 @@
 #ifndef GEOM_HPP
 #define GEOM_HPP
-#include<cstddef>
+#include <cstddef>
 namespace topIT
 {
-struct p_t
+    struct p_t
     {
         int x, y;
     };
@@ -15,5 +15,6 @@ struct p_t
     };
     size_t rows(f_t fr);
     size_t cols(f_t fr);
+    f_t frame(const p_t *pts, size_t s);
 }
 #endif
