@@ -1,6 +1,6 @@
 #ifndef LINES_HPP
 #define LINES_HPP
-#include "IDrow.hpp"
+#include "idraw.hpp"
 namespace topIT
 {
   struct VerticalLine : IDraw
@@ -17,6 +17,8 @@ namespace topIT
     p_t begin() const override;
     p_t next(p_t) const override;
   };
-
+  struct DiagLine : IDraw
+  {
+  };
 }
 #endif

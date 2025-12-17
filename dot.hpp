@@ -1,6 +1,6 @@
 #ifndef DOT_HPP
 #define DOT_HPP
-#include "IDrow.hpp"
+#include "idraw.hpp"
 namespace topIT
 {
   struct Dot : IDraw
