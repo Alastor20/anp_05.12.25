@@ -1,18 +1,8 @@
 #include <iostream>
+#include"geom.hpp"
 
 namespace topIT
 {
-    struct p_t
-    {
-        int x, y;
-    };
-    bool operator==(p_t, p_t);
-    bool operator!=(p_t, p_t);
-    struct f_t
-    {
-        p_t aa, bb;
-    };
-
     struct IDraw
     {
         virtual p_t begin() const = 0;
@@ -46,10 +36,6 @@ namespace topIT
     size_t points(const IDraw &d, p_t **pts, size_t s);
 
     f_t frame(const p_t *pts, size_t s);
-
-    size_t rows(f_t fr);
-    size_t cols(f_t fr);
-
     char *canvas(f_t fr, char fill);
 
     void paint(char *cnv, f_t fr, p_t p, char fill);
@@ -95,8 +81,7 @@ int main()
 }
 topIT::Dot::Dot(int x, int y) : IDraw(), d{x, y} {}
 topIT::Dot::Dot(p_t dd) : IDraw(), d{dd} {}
-bool topIT::operator==(p_t a, p_t b) { return a.x == b.x && a.y == b.y; }
-bool topIT::operator!=(p_t a, p_t b) { return !(a == b); }
+
 topIT::p_t topIT::Dot::begin() const { return d; }
 topIT::p_t topIT::Dot::next(p_t prev) const
 {
@@ -152,9 +137,6 @@ topIT::f_t topIT::frame(const p_t *pts, size_t s)
     p_t bb = {maxx, maxy};
     return {aa, bb};
 }
-
-size_t topIT::cols(f_t fr) { return fr.bb.x - fr.aa.x + 1; }
-size_t topIT::rows(f_t fr) { return fr.bb.y - fr.aa.y + 1; }
 
 char *topIT::canvas(f_t fr, char fill)
 {
