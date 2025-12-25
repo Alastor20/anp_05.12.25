@@ -3,14 +3,15 @@
 #include <cstddef>
 #include <cstring>
 #include <iostream>
+#include <istream>
 #include <stdexcept>
 
-void hi()
+void hi(std::istream &)
 {
   std::cout << "< HI! >\n";
 }
 
-void hello()
+void hello(std::istream &)
 {
   std::cout << "< HELLO! >\n";
 }
@@ -55,8 +56,9 @@ bool is_space(char c)
 
 int main()
 {
-  constexpr size_t cmds_count = 2;
-  void (*cmds[cmds_count])() = {hi, hello};
+  constexpr size_t cmds_count = 3;
+  using cmd_t = void (*)(std::istream &);
+  cmd_t cmds[cmds_count] = {hi, hello};
   const char *const cmd_text[] = {"hi", "hello"};
   constexpr size_t bcapasity = 255;
   char word[bcapasity + 2] = {};
@@ -68,7 +70,7 @@ int main()
     } else {
       word[size - 1] = '\0';
       if (size_t i = match(word, cmd_text, cmds_count); i < cmds_count) {
-        cmds[i]();
+        cmds[i](std::cin);
       } else {
         std::cerr << "< UNKNOWN >\n";
       }
