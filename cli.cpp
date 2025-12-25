@@ -1,6 +1,7 @@
 #include <cassert>
 #include <cctype>
 #include <cstddef>
+#include <cstring>
 #include <iostream>
 #include <stdexcept>
 
@@ -9,7 +10,12 @@ void hi()
   std::cout << "< HI! >\n";
 }
 
-std::istream &getWord(std::istream &is, char *word, size_t k, bool (*c)(char))
+void hello()
+{
+  std::cout << "< HELLO! >\n";
+}
+
+std::istream &getWord(std::istream &is, char *word, size_t k, size_t &size, bool (*c)(char))
 {
   is >> std::noskipws;
   size_t i = 0;
@@ -24,11 +30,23 @@ std::istream &getWord(std::istream &is, char *word, size_t k, bool (*c)(char))
   if (i == k) {
     is.clear(is.rdstate() | std::ios::failbit);
   }
+  word[i] = 0;
+  size = i;
   return is >> std::skipws;
 }
 
 size_t match(const char *word, const char *const *words, size_t k)
-{}
+{
+  for (size_t i = 0; i < k; ++i) {
+    bool matching = std::strlen(word) == std::strlen(words[i]);
+    matching = matching && !std::strcmp(word, words[i]);
+    if (matching) {
+      assert(i < k && "i must be less then k");
+      return i;
+    }
+  }
+  return k;
+}
 
 bool is_space(char c)
 {
@@ -37,19 +55,23 @@ bool is_space(char c)
 
 int main()
 {
-  constexpr size_t cmds_count = 1;
-  void (*cmds[cmds_count])() = {hi};
-  const char *const cmd_text[] = {"hi"};
-  constexpr size_t bsize = 255;
-  char word[bsize + 1] = {};
-  while (!getWord(std::cin, word, bsize, is_space).eof()) {
+  constexpr size_t cmds_count = 2;
+  void (*cmds[cmds_count])() = {hi, hello};
+  const char *const cmd_text[] = {"hi", "hello"};
+  constexpr size_t bcapasity = 255;
+  char word[bcapasity + 2] = {};
+  size_t size;
+  while (!getWord(std::cin, word, bcapasity, size, is_space).eof()) {
     if (std::cin.fail()) {
       std::cerr << "< INVALID >\n";
       return 1;
-    } else if (size_t i = match(word, cmd_text, cmds_count); i < cmds_count) {
-      cmds[i]();
     } else {
-      std::cerr << "< UNKNOWN >\n";
+      word[size - 1] = '\0';
+      if (size_t i = match(word, cmd_text, cmds_count); i < cmds_count) {
+        cmds[i]();
+      } else {
+        std::cerr << "< UNKNOWN >\n";
+      }
     }
   }
 }
